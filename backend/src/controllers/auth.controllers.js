@@ -1,11 +1,10 @@
 import { User } from "../models/user.models.js";
 import { OTP } from "../models/otp.models.js";
-import mailSender from "../utils/mailSender.js";
 import otpGenerator from 'otp-generator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-exports.sendOtp = async(req,res) => {
+export const sendOtp = async(req,res) => {
   try {
     const {email} = req.body;
 
@@ -57,11 +56,11 @@ exports.sendOtp = async(req,res) => {
   }
 }
 
-exports.signUp = async(req,res) => {
+export const signUp = async(req,res) => {
   try {
     const {name,email,password,otp} = req.body;
 
-    if(!name || !email || password || !otp){
+    if(!name || !email || !password || !otp){
       return res.status(403).json({
         success:false,
         message:"All fields are required"
@@ -85,7 +84,8 @@ exports.signUp = async(req,res) => {
         message:"OTP not found"
       });
     }
-    else if(recentOtp != otp){
+    else if(recentOtp[0].otp != otp){
+      console.log(recentOtp[0].otp);
       return res.status(400).json({
         success:false,
         message:"Invalid OTP",
@@ -116,7 +116,7 @@ exports.signUp = async(req,res) => {
   }
 }
 
-exports.login = async(req,res) => {
+export const login = async(req,res) => {
   try {
     const {email,password} = req.body;
 
@@ -174,4 +174,5 @@ exports.login = async(req,res) => {
       message:'Sorry, something went wrong. Please try again'
     })  
   }
-}
+};
+

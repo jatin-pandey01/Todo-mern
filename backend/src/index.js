@@ -1,6 +1,8 @@
 import express from "express";
 import { config } from "dotenv";
 import connectDB from "./config/database.js";
+import auth from './routes/auth.routes.js';
+import cors from 'cors';
 
 config();
 const app = express();
@@ -19,3 +21,16 @@ connectDB()
 .catch((e)=>{
   console.log("MongoDB Error : ", e);
 });
+
+app.use(express.json());
+app.use(cors());
+
+app.get('/',(req,res)=>{
+  return res.json({
+    success:true,
+    message:"Server running on home route"
+  });
+})
+
+console.log(auth);
+app.use('/api/v1/auth',auth);
