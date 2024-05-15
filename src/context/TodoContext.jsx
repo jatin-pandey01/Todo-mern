@@ -10,7 +10,6 @@ function TodoContextProvider(props){
   const [createTodo, setCreateTodo] = useState(false);
   const [name,setName] = useState("");
   const [email,setEmail] = useState("");
-  const [mobile,setMobile] = useState("");
   const [password,setPassword] = useState('');
   
 
@@ -22,7 +21,6 @@ function TodoContextProvider(props){
     createTodo,setCreateTodo,
     name,setName,
     email,setEmail,
-    mobile,setMobile,
     password,setPassword, id
   }
 

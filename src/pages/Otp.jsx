@@ -3,12 +3,13 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import React from 'react'
 import { TodoContext } from "../context/TodoContext";
+import axios from "axios";
 
 const Otp = () => {
   const length = 6;
   const [otp, setOtp] = useState(new Array(6).fill(""));
 	const inputRefs = useRef([]);
-  const {email} = useContext(TodoContext);
+  const {email,name,password} = useContext(TodoContext);
 
 	useEffect(() => {
 		if (inputRefs.current[0]) {
@@ -16,7 +17,7 @@ const Otp = () => {
 		}
 	}, []);
 
-	const handleChange = (index, e) => {
+	const handleChange = async(index, e) => {
 		const value = e.target.value;
 		if (isNaN(value)) return;
 
@@ -27,6 +28,18 @@ const Otp = () => {
 
 		const combinedOtp = newOtp.join("");
 		if (combinedOtp.length === length){
+      try {
+        const res = await axios.post('http://localhost:3000/api/v1/auth/sign-up',{
+          name:name,
+          email:email,
+          password:password,
+          otp:combinedOtp
+        });
+        console.log(res);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
       console.log(combinedOtp);
     }
 
@@ -57,7 +70,7 @@ const Otp = () => {
 
 	return (
 		<div className="h-[80vh] flex flex-col justify-center items-center">
-      <p className="text-white mb-8"> Otp sent on : <span className="text-blue-600 text-xl"> {email} </span> </p>
+      <p className="text-white mb-8"> Otp sent on : <span className="text-blue-600 text-xl underline"> {email} </span> </p>
 			<div>
       {otp.map((value, index) => {
 				return (

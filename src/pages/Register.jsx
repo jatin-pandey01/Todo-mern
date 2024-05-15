@@ -2,17 +2,18 @@ import React,{useContext, useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { IoIosEye,IoIosEyeOff } from "react-icons/io";
 import { TodoContext } from '../context/TodoContext';
+import axios from 'axios';
 
 
 const Register = () => {
   const [isEyeOpen,setIsEyeOpen] = useState(false);
-  const {name,email,password, mobile, setEmail,setName, setPassword, setMobile} = useContext(TodoContext);
+  const {name, email, password, setEmail,setName, setPassword} = useContext(TodoContext);
   const navigate = useNavigate();
   const [message,setMessage] = useState("");
 
-  const submit = (e)=>{
+  const submit = async(e)=>{
     e.preventDefault();
-    if(!name || !email || !password || !mobile){
+    if(!name || !email || !password ){
       setMessage("All fields are required.");
       return;
     }
@@ -20,11 +21,19 @@ const Register = () => {
       setMessage("Sorry, wrong email id.");
       return;
     }
-    else if(mobile.length < 10){
-      setMessage("Sorry, wrong mobile number.");
-      return;
-    }
     else{
+      try {
+        const res = await axios.post('http://localhost:3000/api/v1/auth//send-otp',{
+          email:email
+        });
+        const data = res.data;
+        console.log(data);
+        if(!data.success){
+          setMessage(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
       navigate('/otp-verification');
     }
   }
@@ -36,14 +45,12 @@ const Register = () => {
         
         <input type='text' value={name} onChange={(e)=>{setName(e.target.value);
           setMessage('');
-        }} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-400 placeholder:text-white placeholder:opacity-75' required placeholder='Name' />
+        }} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-600 placeholder:text-white placeholder:opacity-75' required placeholder='Name' />
 
-        <input type='text' value={email} onChange={(e)=>{setEmail(e.target.value);setMessage('');}} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-400 placeholder:text-white placeholder:opacity-75' required placeholder='Email Id' />
+        <input type='text' value={email} onChange={(e)=>{setEmail(e.target.value);setMessage('');}} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-600 placeholder:text-white placeholder:opacity-75' required placeholder='Email Id' />
         
-        <input type='text' value={mobile} onChange={(e)=>{setMobile(e.target.value);setMessage('');}} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-400 placeholder:text-white placeholder:opacity-75' required placeholder='Mobile number' />
-
         <div className='relative w-72'>
-          <input type={isEyeOpen ? 'text' : 'password'} value={password} placeholder='Password' className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-400 
+          <input type={isEyeOpen ? 'text' : 'password'} value={password} placeholder='Password' className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-600 
           placeholder:text-white placeholder:opacity-75' required onChange={(e)=>{setPassword(e.target.value);setMessage('');}} />
           <p className='absolute top-2 right-4'>
           {
