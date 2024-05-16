@@ -1,12 +1,26 @@
 import React, { useContext, useState } from 'react'
 import { TodoContext } from '../context/TodoContext';
+import axios from 'axios';
 
 const CreateTodo = () => {
-  const {setCreateTodo} = useContext(TodoContext);
+  const {setCreateTodo,id,setTodo} = useContext(TodoContext);
   const [title,setTitle] = useState('');
   const [body,setBody] = useState('');
 
-  const sendData = async()=>{
+  const sendData = async(e)=>{
+    e.preventDefault();
+    try {
+      const res = await axios.post('http://localhost:3000/api/v1/todo/create-todo',{
+        id:id,
+        title:title,
+        body:body,
+      });
+      console.log(res.data.data);
+      setCreateTodo(false);
+      setTodo(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
     console.log(title);
     console.log(body);
   }

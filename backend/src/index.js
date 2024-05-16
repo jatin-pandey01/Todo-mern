@@ -1,8 +1,10 @@
 import express from "express";
 import { config } from "dotenv";
 import connectDB from "./config/database.js";
-import auth from './routes/auth.routes.js';
+import authRoute from './routes/auth.routes.js';
+import todoRoute from './routes/todo.routes.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 config();
 const app = express();
@@ -23,7 +25,10 @@ connectDB()
 });
 
 app.use(express.json());
+
 app.use(cors());
+
+app.use(cookieParser());
 
 app.get('/',(req,res)=>{
   return res.json({
@@ -32,5 +37,5 @@ app.get('/',(req,res)=>{
   });
 })
 
-console.log(auth);
-app.use('/api/v1/auth',auth);
+app.use('/api/v1/auth',authRoute);
+app.use('/api/v1/todo',todoRoute);

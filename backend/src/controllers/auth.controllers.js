@@ -3,6 +3,8 @@ import { OTP } from "../models/otp.models.js";
 import otpGenerator from 'otp-generator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { config } from "dotenv";
+config();
 
 export const sendOtp = async(req,res) => {
   try {
@@ -100,7 +102,21 @@ export const signUp = async(req,res) => {
       password:hashedPassword
     });
 
-    return res.status(200).json({
+    const payload = {
+      email:email,
+      name:name,
+      id:userDetails._id
+    };
+
+    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"2h"});
+    userDetails.password = undefined;
+
+    const options = {
+      expires: new Date(Date.now()+3*24*60*60*1000),
+      httpOnly:true,
+    }
+
+    return res.cookie("token",token,options).status(200).json({
       success:true,
       message:"User registered successfully",
       data:userDetails,
@@ -140,11 +156,11 @@ export const login = async(req,res) => {
 
       const payload = {
         email:checkUserExist.email,
+        name:checkUserExist.name,
         id:checkUserExist._id
       };
 
       const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"2h"});
-      checkUserExist.token = token;
       checkUserExist.password = undefined;
 
       const options = {
@@ -176,3 +192,36 @@ export const login = async(req,res) => {
   }
 };
 
+export const userAuth = async(req,res)=>{
+  try {
+    const token = req.header("Authorization").split('=')[1];
+    if(!token){
+      return res.status(401).json({
+        success:false,
+        message:"User not exist",
+      });
+    }
+    console.log(`\n Token sir : ${token}`);
+    try {
+      console.log(process.env.JWT_SECRET);
+      const decode = jwt.verify(token,process.env.JWT_SECRET);
+      console.log(decode);
+      req.user = decode;
+      return res.status(200).json({
+        success:true,
+        message:"User is authorized",
+        data:decode,
+      });
+    } catch (error) {
+      return res.status(401).json({
+        success:false,
+        message:"Unvalid, please login again"
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:"Something went wrong, please reload page."
+    })
+  }
+}

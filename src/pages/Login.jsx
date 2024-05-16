@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosEye,IoIosEyeOff } from "react-icons/io";
 import axios from 'axios';
+import { TodoContext } from '../context/TodoContext';
 
 const Login = () => {
 
@@ -9,6 +10,15 @@ const Login = () => {
   const [password,setPassword] = useState("");
   const [isEyeOpen,setIsEyeOpen] = useState(false);
   const [message,setMessage] = useState('');
+  const {id,name} = useContext(TodoContext);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    console.log(document.cookie);
+    if(document.cookie){
+      navigate('/');
+    }
+  },[]);
 
   const submit = async(e)=>{
     e.preventDefault();
@@ -24,7 +34,8 @@ const Login = () => {
         setMessage(data.message);
       }
       else if(data.success){
-        document.cookie = `token=${data.token}; path=/`;
+        document.cookie = `token=${data.token}; Path=/;`;
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -36,9 +47,9 @@ const Login = () => {
     <div className='flex flex-col justify-center h-[80vh] items-center gap-10'>
       <p className='text-white font-semibold tracking-wider text-xl'> Dear user, please login below </p>
       <form className='flex flex-col justify-center gap-6'>
-        <input type='text' value={email} onChange={(e)=>{setEmail(e.target.value);setMessage('');}} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-400 placeholder:text-white placeholder:opacity-75' required placeholder='Email Id' />
+        <input type='text' value={email} onChange={(e)=>{setEmail(e.target.value);setMessage('');}} className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-600 placeholder:text-white placeholder:opacity-75' required placeholder='Email Id' />
         <div className='relative w-72'>
-          <input type={isEyeOpen ? 'text' : 'password'} value={password} placeholder='Password' className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-400 
+          <input type={isEyeOpen ? 'text' : 'password'} value={password} placeholder='Password' className='outline-none text-white px-3 rounded-lg py-2 w-72 bg-slate-600 
           placeholder:text-white placeholder:opacity-75' required onChange={(e)=>{setPassword(e.target.value);setMessage('');}} />
           <p className='absolute top-2 right-4'>
           {

@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
 
 export const TodoContext = createContext();
 
@@ -11,9 +12,29 @@ function TodoContextProvider(props){
   const [name,setName] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState('');
-  
+  const [id,setId] = useState('');
+  const {user,setUser} = useState({});
 
-  const id = window.localStorage.getItem("token") ? window.localStorage.getItem("token") : null;
+  useEffect(async()=>{
+    // console.log("hello");
+    console.log(document.cookie);
+    const apiCall = async()=>{
+      try {
+        const res = await axios.get('http://localhost:3000/api/v1/auth/user-auth',{
+          headers:{Authorization:`${document.cookie.split(';')[0]}`}
+        });
+        console.log(res.data);
+        const data = res.data.data;
+        console.log(data);
+        setId(data.id);
+        setName(data.name);
+        setEmail(data.email);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    apiCall();
+  },[]);
 
   const value = {
     loading, setLoading,
@@ -21,7 +42,9 @@ function TodoContextProvider(props){
     createTodo,setCreateTodo,
     name,setName,
     email,setEmail,
-    password,setPassword, id
+    password,setPassword,
+    id,setId,
+    user,setUser
   }
 
   return <TodoContext.Provider value={value} >
