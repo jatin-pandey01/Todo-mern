@@ -11,7 +11,7 @@ const Navbar = () => {
       <Link className='text-xl font-semibold tracking-wide cursor-pointer' to={'/'}> {id ? `Hello, ${name}`:'JP Todo'} </Link>
       <div className='flex gap-10 text-xl font-bold'>
         <NavLink className='tracking-wider cursor-pointer' to={'/'}> Home </NavLink>
-        <p className='tracking-wider cursor-pointer' onClick={()=>{document.cookie ? navigate('/login') : setCreateTodo(true)}}> Create Todo </p>
+        <p className='tracking-wider cursor-pointer' onClick={()=>{id ? alert('Please login for creating todo.') : setCreateTodo(true)}}> Create Todo </p>
         
         {
           id ? 
