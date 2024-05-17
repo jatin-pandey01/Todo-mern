@@ -38,7 +38,8 @@ const Login = () => {
         window.location.reload();
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
+      setMessage(error.response.data.message);
     }
 
   }
