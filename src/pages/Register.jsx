@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { IoIosEye,IoIosEyeOff } from "react-icons/io";
 import { TodoContext } from '../context/TodoContext';
@@ -8,8 +8,14 @@ import axios from 'axios';
 const Register = () => {
   const [isEyeOpen,setIsEyeOpen] = useState(false);
   const {name, email, password, setEmail,setName, setPassword} = useContext(TodoContext);
-  const navigate = useNavigate();
   const [message,setMessage] = useState("");
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    if(document.cookie){
+      navigate('/');
+    }
+  },[]);
 
   const submit = async(e)=>{
     e.preventDefault();
@@ -23,7 +29,7 @@ const Register = () => {
     }
     else{
       try {
-        const res = await axios.post('http://localhost:3000/api/v1/auth//send-otp',{
+        const res = await axios.post('https://todo-api-kax0.onrender.com/api/v1/auth//send-otp',{
           email:email
         });
         const data = res.data;

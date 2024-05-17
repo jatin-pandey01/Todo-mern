@@ -25,7 +25,7 @@ async function sendVerificationEmail(email,otp){
   }
   catch (error) {
       console.log(`Error in sending verification mail in OTP model : ${error}`);
-      throw error;
+      // throw error;
   }
 }
 

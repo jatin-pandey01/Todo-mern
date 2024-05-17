@@ -69,7 +69,7 @@ export const signUp = async(req,res) => {
       });
     }
 
-    const checkUserExists = await User.findOne({emailId:email});
+    const checkUserExists = await User.findOne({email:email});
 
     if(checkUserExists){
       return res.status(401).json({

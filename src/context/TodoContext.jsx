@@ -7,7 +7,7 @@ function TodoContextProvider(props){
   const children = props.children;
 
   const [loading, setLoading] = useState(false);
-  const [todo, setTodo] = useState([]);
+  const [todo, setTodo] = useState(null);
   const [createTodo, setCreateTodo] = useState(false);
   const [name,setName] = useState("");
   const [email,setEmail] = useState("");
@@ -20,7 +20,7 @@ function TodoContextProvider(props){
     console.log(document.cookie);
     const apiCall = async()=>{
       try {
-        const res = await axios.get('http://localhost:3000/api/v1/auth/user-auth',{
+        const res = await axios.get('https://todo-api-kax0.onrender.com/api/v1/auth/user-auth',{
           headers:{Authorization:`${document.cookie.split(';')[0]}`}
         });
         console.log(res.data);

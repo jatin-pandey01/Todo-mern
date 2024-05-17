@@ -23,7 +23,7 @@ const Login = () => {
   const submit = async(e)=>{
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/v1/auth/login',{
+      const res = await axios.post('https://todo-api-kax0.onrender.com/api/v1/auth/login',{
         email:email,
         password:password,
       });

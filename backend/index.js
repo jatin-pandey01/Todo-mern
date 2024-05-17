@@ -14,7 +14,7 @@ connectDB()
 .then(()=>{
   app.on("error",(error)=>{
     console.log("\nError while connecting with express : ",error);
-    throw error;
+    // throw error;
   });
   app.listen(PORT,()=>{
     console.log(`App listening on Port : ${PORT}`);
