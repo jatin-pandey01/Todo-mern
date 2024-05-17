@@ -49,7 +49,7 @@ const Home = () => {
       {
         document.cookie ? <div>
           {
-            todo ? todo.map((data,index)=>{
+            todo.length >= 1 ? todo.map((data,index)=>{
               return <div key={index} className='text-white rounded-lg sm:m-10 sm:p-5 flex flex-col gap-3 bg-slate-600 shadow-lg'>
                 <div className='flex justify-between items-center'>
                 <p className='font-semibold text-2xl'> Title :  {data.title} </p>

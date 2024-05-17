@@ -7,7 +7,7 @@ function TodoContextProvider(props){
   const children = props.children;
 
   const [loading, setLoading] = useState(false);
-  const [todo, setTodo] = useState(null);
+  const [todo, setTodo] = useState([]);
   const [createTodo, setCreateTodo] = useState(false);
   const [name,setName] = useState("");
   const [email,setEmail] = useState("");
