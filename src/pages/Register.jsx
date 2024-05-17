@@ -8,9 +8,9 @@ import axios from 'axios';
 const Register = () => {
   const [isEyeOpen,setIsEyeOpen] = useState(false);
   const {name, email, password, setEmail,setName, setPassword} = useContext(TodoContext);
-  const [message,setMessage] = useState("");
   const navigate = useNavigate();
-  
+  const [message,setMessage] = useState("");
+
   useEffect(()=>{
     if(document.cookie){
       navigate('/');

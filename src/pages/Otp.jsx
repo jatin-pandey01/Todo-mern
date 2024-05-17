@@ -74,8 +74,11 @@ const Otp = () => {
         });
         console.log(res);
         console.log(res.data);
+				const data = res.data;
 				if(res.data.success){
+					document.cookie = `token=${data.token}; Path=/;`;
 					navigate('/');
+        	// window.location.reload();
 				}
       } catch (error) {
 				setMessage(error.response.data.message + ".  Please register again");

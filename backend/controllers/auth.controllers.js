@@ -120,6 +120,7 @@ export const signUp = async(req,res) => {
       success:true,
       message:"User registered successfully",
       data:userDetails,
+      token:token,
     });
 
   } 
