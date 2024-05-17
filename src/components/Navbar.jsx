@@ -14,7 +14,7 @@ const Navbar = () => {
         
         {
           id ? 
-            <p className='tracking-wider cursor-pointer' onClick={()=>{document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; window.location.reload();}}>  Login </p> : 
+            <p className='tracking-wider cursor-pointer' onClick={()=>{document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; window.location.reload();}}>  Logout </p> : 
             <NavLink className='tracking-wider cursor-pointer' to={'/login'} >  Login </NavLink>
         }
         {
