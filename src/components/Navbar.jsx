@@ -7,14 +7,14 @@ const Navbar = () => {
   const {id,setCreateTodo,createTodo,name} = useContext(TodoContext);
   return (
     <div className='min-w-full py-4 bg-slate-500 text-white flex justify-around'>
-      <Link className='text-xl font-semibold tracking-wide cursor-pointer' to={'/'}> JP Todo </Link>
+      <Link className='text-xl font-semibold tracking-wide cursor-pointer' to={'/'}> Hello, {name} </Link>
       <div className='flex gap-10 text-xl font-bold'>
         <NavLink className='tracking-wider cursor-pointer' to={'/'}> Home </NavLink>
         <p className='tracking-wider cursor-pointer' onClick={()=>{setCreateTodo(true)}}> Create Todo </p>
         
         {
           id ? 
-            <p className='tracking-wider cursor-pointer' onClick={()=>{document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; window.location.reload();}}>  {name} </p> : 
+            <p className='tracking-wider cursor-pointer' onClick={()=>{document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'; window.location.reload();}}>  Login </p> : 
             <NavLink className='tracking-wider cursor-pointer' to={'/login'} >  Login </NavLink>
         }
         {
